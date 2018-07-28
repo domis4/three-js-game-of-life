@@ -24,7 +24,6 @@ scene.add(axesHelper)
 
 const render = () => {
   stats.begin()
-
   renderer.render(scene, camera)
   update()
   stats.end()
