@@ -1,0 +1,3 @@
+{
+  "extends": ["eslint-config-8select-flow", "eslint:recommended"]
+}
