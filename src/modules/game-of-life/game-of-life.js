@@ -1,37 +1,38 @@
-import { Scene, BoxGeometry, MeshBasicMaterial, Mesh } from 'three'
-import { getDelta } from '../delta-time/delta-time'
-
-const fieldAmount = 25
-const fieldSize = 1
-const field = []
+import { Scene, CubeGeometry, MeshLambertMaterial, Mesh } from 'three'
+import ambientLight from '../ambient-light/ambient-light'
+import grid from '../grid/grid'
+import directionalLight from '../directional-light/directional-light'
+import { gridSize } from './game-of-life.const'
 
 export const scene = new Scene()
 
-const init = () => {
-  while (scene.children.length > 0) {
-    scene.remove(scene.children[0])
-  }
+scene.add(grid)
+scene.add(ambientLight)
+scene.add(directionalLight)
 
-  new Array(fieldAmount).fill().map((n, i) => {
-    field[i] = []
-    new Array(fieldAmount).fill().map((m, j) => {
-      const geometry = new BoxGeometry(fieldSize, fieldSize, fieldSize)
-      const alive = new MeshBasicMaterial({ color: '#fff' })
-      const dead = new MeshBasicMaterial({ color: '#aaa' })
-      const isDeadOrAlive = Math.random() >= 0.5 ? alive : dead
-      const cube = new Mesh(geometry, isDeadOrAlive)
-      cube.position.x = i * fieldSize
-      cube.position.z = j * fieldSize
+const cubeMaterial = new MeshLambertMaterial({
+  color: '#bbb',
+})
 
-      field[i][j] = cube
-      scene.add(cube)
-    })
+new Array(gridSize / 2).fill().forEach((n, i) => {
+  new Array(gridSize / 2).fill().forEach((n, j) => {
+    const shouldCreate = Math.random() > 0.5
+    if (!shouldCreate) {
+      return
+    }
+
+    const cubeGeometry = new CubeGeometry(1, 1, 1)
+    var cube = new Mesh(cubeGeometry, cubeMaterial)
+    const start = gridSize / 4 - 0.5
+
+    cube.position.x = i - start
+    cube.position.y = 0
+    cube.position.z = j - start
+
+    scene.add(cube)
   })
-}
+})
 
-init()
-scene.position.x = -fieldAmount / 2
-scene.position.z = -fieldAmount / 2
-window.getNextStep = () => init()
+export const render = () => {}
 
 export const update = () => {}

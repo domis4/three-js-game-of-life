@@ -15,7 +15,7 @@ const onWindowResize = () => {
 
 const renderer = new WebGLRenderer({ antialias: true })
 
-renderer.setClearColor('#000')
+renderer.setClearColor('#fff')
 renderer.setSize(window.innerWidth, window.innerHeight)
 
 document.body.appendChild(stats.dom)
